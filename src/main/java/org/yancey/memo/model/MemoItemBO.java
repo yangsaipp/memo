@@ -23,7 +23,9 @@ import javax.persistence.Table;
 @Table(name = "memo_item")
 public class MemoItemBO {
 	 private int id;
+	 
 	 private String name;
+	 
 	 private String description;
 	 
 	 
