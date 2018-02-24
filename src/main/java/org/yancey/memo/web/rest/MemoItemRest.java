@@ -39,7 +39,6 @@ public class MemoItemRest {
 	
 	@GetMapping(value="/memoItems/search")
 	public List<MemoItemBO> searchMemoItem(MemoItemBO memoItemBO) {
-		System.out.println("====" + memoItemBO.getStatus());
 		return memoItemRepository.findByStatus(memoItemBO.getStatus());
 	}
 	
@@ -53,6 +52,9 @@ public class MemoItemRest {
 		if(memoItemBO.getCreateTime() == null) {
 			memoItemBO.setCreateTime(new Timestamp( Calendar.getInstance().getTimeInMillis()));
 		}
+		if(memoItemBO.getStatus() == null) {
+			memoItemBO.setStatus("0");
+		}
 		return memoItemRepository.save(memoItemBO);
 	}
 	
@@ -61,9 +63,14 @@ public class MemoItemRest {
 		memoItemRepository.delete(id);
 	}
 	
-	@PostMapping(value="/batch_memoItems")
+	@PostMapping(value="/batch_del_memoItems")
 	public void delete(@RequestBody List<MemoItemBO> lstMemoItemBO) {
 		memoItemRepository.deleteInBatch(lstMemoItemBO);;
+	}
+
+	@PostMapping(value="/batch_changeStatus_memoItems")
+	public void changeStatus(@RequestBody List<MemoItemBO> lstMemoItemBO) {
+		memoItemRepository.save(lstMemoItemBO);;
 	}
 	
 }

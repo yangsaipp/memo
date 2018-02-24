@@ -12,7 +12,7 @@ scotchApp.factory('MemoItems',function($resource){
 scotchApp.controller('mainController',['$scope','MemoItems','$http', function($scope, MemoItems, $http) {
 	var memoItemList = null;
 	
-	var conditionVO = $scope.conditionVO = {status: '1'}
+	var conditionVO = $scope.conditionVO = {status: '0'}
 	
 	search();
 	
@@ -24,7 +24,21 @@ scotchApp.controller('mainController',['$scope','MemoItems','$http', function($s
 			}
 		}
 		
-		$http.post('/batch_memoItems/', delData).then(function(response){
+		$http.post('/batch_del_memoItems', delData).then(function(response){
+			search();
+		});
+	}
+
+	$scope.changeStatus = function(status) {
+		var changeData = [];
+		for (var i=0; i<memoItemList.length; i++){
+			if(memoItemList[i].checked) {
+				memoItemList[i].status = status;
+				changeData.push(memoItemList[i]);
+			}
+		}
+		
+		$http.post('/batch_changeStatus_memoItems', changeData).then(function(response){
 			search();
 		});
 	}
