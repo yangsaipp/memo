@@ -1,14 +1,34 @@
+<div class="btn-group">
+  	<button type="button" class="btn btn-default" ng-click="searchStatus(0)">未开始</button>
+  	<button type="button" class="btn btn-default" ng-click="searchStatus(1)">进行中</button>
+  	<button type="button" class="btn btn-default" ng-click="searchStatus(2)">已完成</button>
+  	<button type="button" class="btn btn-default" ng-click="searchStatus(3)">放弃</button>
+</div>
+<div class="btn-group">
+    <a href="#memoItem" class="btn btn-default" role="button">新增</a>
+  	<button type="button" class="btn btn-default" ng-click="batchDel()">删除</button>
+</div>
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
+        <th></th>
+        <th>事项主题</th>
+        <th>事项描述</th>
+        <th>项目组</th>
+        <th>计划开始时间</th>
+        <th>状态</th>
+        <th>创建时间</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="item in memoItemList">
-        <td>{{item.id}}</td>
-        <td><a href="#memoItem/{{email.id}}">{{item.name}}</a></td>
+        <td><input type="checkbox" ng-model="item.checked"></td>
+        <td><a href="#memoItem/{{item.id}}">{{item.name}}</a></td>
+        <td>{{item.description}}</td>
+        <td>{{item.projectTeam}}</td>
+        <td>{{item.planStartTime | date:'yyyy-MM-dd'}}</td>
+        <td>{{fmtStatus(item.status)}}</td>
+        <td>{{item.createTime | date:'yyyy-MM-dd'}}</td>
     </tr>
     </tbody>
 </table>

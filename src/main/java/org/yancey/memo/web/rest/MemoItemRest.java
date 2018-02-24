@@ -7,12 +7,16 @@
 
 package org.yancey.memo.web.rest;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.yancey.memo.model.MemoItemBO;
 import org.yancey.memo.repository.MemoItemRepository;
@@ -33,19 +37,33 @@ public class MemoItemRest {
 		return memoItemRepository.findAll();
 	}
 	
+	@GetMapping(value="/memoItems/search")
+	public List<MemoItemBO> searchMemoItem(MemoItemBO memoItemBO) {
+		System.out.println("====" + memoItemBO.getStatus());
+		return memoItemRepository.findByStatus(memoItemBO.getStatus());
+	}
+	
 	@GetMapping(value="/memoItems/{id}")
-	public MemoItemBO find(Integer id) {
+	public MemoItemBO find(@PathVariable Integer id) {
 		return memoItemRepository.findOne(id);
 	}
 	
 	@PostMapping(value="/memoItems")
-	public MemoItemBO save(MemoItemBO memoItemBO) {
+	public MemoItemBO save(@RequestBody MemoItemBO memoItemBO) {
+		if(memoItemBO.getCreateTime() == null) {
+			memoItemBO.setCreateTime(new Timestamp( Calendar.getInstance().getTimeInMillis()));
+		}
 		return memoItemRepository.save(memoItemBO);
 	}
 	
 	@DeleteMapping(value="/memoItems/{id}")
-	public void delete(Integer id) {
+	public void delete(@PathVariable Integer id) {
 		memoItemRepository.delete(id);
+	}
+	
+	@PostMapping(value="/batch_memoItems")
+	public void delete(@RequestBody List<MemoItemBO> lstMemoItemBO) {
+		memoItemRepository.deleteInBatch(lstMemoItemBO);;
 	}
 	
 }
