@@ -9,7 +9,7 @@ pipeline {
 				bat(/gradle build/)
             }
         }
-		stage('Build') {
+		stage('Build2') {
             steps {
 				// 若有if和def，则写在script中
 				script {
