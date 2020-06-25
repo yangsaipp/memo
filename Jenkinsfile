@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+				// 若有变量定义，则写在script中
 				script {
-				
 					def mvnHome = tool 'gradle-3.3'
 					// Run the maven build
 					if (isUnix()) {
@@ -14,6 +14,16 @@ pipeline {
 						bat(/"${mvnHome}\bin\gradle" build/)
 					}
 				
+				}
+                
+            }
+        }
+		stage('Build2') {
+            steps {
+				if (isUnix()) {
+					sh "gradle build"
+				} else {
+					bat(/gradle build/)
 				}
                 
             }
