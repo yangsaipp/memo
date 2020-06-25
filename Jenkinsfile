@@ -19,13 +19,9 @@ pipeline {
             }
         }
 		stage('Build2') {
-            
-			if (isUnix()) {
-				sh "gradle build"
-			} else {
+            steps {
 				bat(/gradle build/)
-			}
-             
+            }
         }
         stage('Test') {
             steps {
