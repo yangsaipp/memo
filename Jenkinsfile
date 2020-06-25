@@ -2,9 +2,16 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        
+		stage('Build') {
             steps {
-				// 若有变量定义，则写在script中
+				// steps里只能是方法，不能有if和def
+				bat(/gradle build/)
+            }
+        }
+		stage('Build') {
+            steps {
+				// 若有if和def，则写在script中
 				script {
 					def mvnHome = tool 'gradle-3.3'
 					// Run the maven build
@@ -16,11 +23,6 @@ pipeline {
 				
 				}
                 
-            }
-        }
-		stage('Build2') {
-            steps {
-				bat(/gradle build/)
             }
         }
         stage('Test') {
